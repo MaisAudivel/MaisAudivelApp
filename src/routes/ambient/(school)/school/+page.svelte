@@ -5,53 +5,40 @@
     import CarouselPrevious from "@/components/ui/carousel/carousel-previous.svelte";
     import Carousel from "@/components/ui/carousel/carousel.svelte";
     import ClassContentCard from "./ClassContentCard.svelte";
+    
+    import SchoolSectionHeader from "./SchoolSectionHeader.svelte";
+    import type { PageServerData } from "./$types";
+    import BookContentDisplay from "./BookContentDisplay.svelte";
 
-    type VideoData = {
-        path: string;
-        title: string;
-    };
-
-    const videoList: VideoData[] = [
-        {
-            path: "/video01.mp4",
-            title: "Alfabeto em libras"
-        },
-        {
-            path: "/video02.mp4",
-            title: "Cumprimentos em libras"
-        },
-        {
-            path: "/video03.mp4",
-            title: "Números em libras"
-        },
-        {
-            path: "/video04.mp4",
-            title: "Diálogo em libras"
-        },
-    ];
+    export let data: PageServerData;
 
 </script>
 
+<SchoolSectionHeader/>
 <div class="flex flex-col w-full px-10 py-5">
     <div>
-        <h1 class="text-3xl font-bold">Vídeos Educativos</h1>
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-3 w-full mx-auto my-10">
-            {#each videoList as videoData}
-                <div class="w-[200px] h-[200px] lg:w-[300px] lg:h-[300px] px-2 rounded-xl">
-                    <video src={videoData.path} controls class="w-full h-[200px]">
-                        <track kind="captions" />
-                    </video>
-                    <hr class="border-black"/>
-                    <h1 class="text-lg font-semibold">{videoData.title}</h1>
-                </div>
-            {/each}
-        </div>
+        <h1 class="sm:text-2xl lg:text-3xl font-bold">Vídeos Educativos</h1>
+        <Carousel class="flex w-full justify-center items-center px-20 mt-10">
+            <CarouselContent class="flex w-full items-center gap-x-4">
+                {#each data.videoList as videoData}
+                    <CarouselItem class="flex flex-col gap-y-2 sm:basis-full lg:basis-1/3 w-[300px] h-[200px] rounded-xl px-6 py-2">
+                        <video src={videoData.path} controls class="w-full h-[200px]">
+                            <track kind="captions" />
+                        </video>
+                        <hr class="border-black"/>
+                        <h1 class="text-lg font-semibold">{videoData.title}</h1>
+                    </CarouselItem>
+                {/each}
+            </CarouselContent>
+            <CarouselPrevious/>
+            <CarouselNext/>
+        </Carousel>
     </div>
 </div>
 
 <div class="flex flex-col w-full px-10 py-5">
     <div>
-        <h1 class="text-3xl font-bold">Maratona de Conteúdos</h1>
+        <h1 class="sm:text-2xl lg:text-3xl font-bold">Maratona de Conteúdos</h1>
         <Carousel opts={{align: "center"}} class="flex w-full max-w-fit justify-center items-center mt-10 mx-auto">
             <CarouselContent>
                 <CarouselItem class="w-[100px] lg:w-[150px]" id="item-1">
@@ -70,4 +57,9 @@
     </div>
 </div>
 
-<div></div>
+<div class="flex flex-col w-full px-10 py-5 mb-20">
+    <div>
+        <h1 class="sm:text-2xl lg:text-3xl font-bold">Leitura e Informação</h1>
+        <BookContentDisplay/>
+    </div>
+</div>
